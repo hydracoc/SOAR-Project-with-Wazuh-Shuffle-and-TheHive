@@ -3,6 +3,7 @@
 ## **Introduction**
 This document provides a structured guide to building a **Security Orchestration, Automation, and Response (SOAR)** project using **Wazuh, TheHive, and Shuffle**. The project aims to create a fully functional **home SOC lab** that mimics a real SOC environment.
 
+- To obtain a full video walkthrough to this project, thanks to **MYDFIR** here: [https://youtu.be/Lb_ukgtYK_U?si=zc0NMNwn1TfoX069]
 ---
 
 ## **Logical Architecture**
