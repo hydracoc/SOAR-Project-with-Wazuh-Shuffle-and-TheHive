@@ -1,0 +1,86 @@
+## Below is my custom rules file I used during the project. Feel free to use this as a reference to creating your own custom rules.
+
+```
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+
+<group name="windows, sysmon, sysmon_process-anomalies,">
+   <rule id="100000" level="12">
+     <if_group>sysmon_event1</if_group>
+     <field name="win.eventdata.image">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process - mimikatz.exe</description>
+   </rule>
+
+   <rule id="100001" level="12">
+     <if_group>sysmon_event8</if_group>
+     <field name="win.eventdata.sourceImage">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process mimikatz.exe created a remote thread</description>
+   </rule>
+
+   <rule id="100002" level="12">
+     <if_group>sysmon_event_10</if_group>
+     <field name="win.eventdata.sourceImage">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process mimikatz.exe accessed $(win.eventdata.targetImage)</description>
+   </rule>
+    <rule id="115001" level="10">
+      <if_group>windows</if_group>
+      <field name="win.eventdata.ruleName" type="pcre2" >technique_id=T1053,technique_name=Scheduled Task</field>
+      <description>A Newly Scheduled Task has been Detected on $(win.system.computer)</description>
+      <mitre>
+        <id>T1053</id>
+      </mitre>
+    </rule>
+    
+    <rule id="115002" level="10">
+      <if_group>windows</if_group>
+      <field name="win.eventdata.ruleName" type="pcre2" >technique_id=T1073,technique_name=DLL Side-Loading</field>
+      <description>DLL Side-Loading Detected on $(win.system.computer)</description>
+      <mitre>
+        <id>T1073</id>
+        <id>T1574.002</id>
+      </mitre>
+    </rule>
+    
+    <rule id="115003" level="10">
+      <if_group>windows</if_group>
+      <field name="win.eventdata.ruleName" type="pcre2" >technique_id=T1218.010,technique_name=Regsvr32</field>
+      <description>Signed Binary Proxy Execution using Regsvr32 Detected on $(win.system.computer)</description>
+      <mitre>
+        <id>T1218</id>
+        <id>T1117</id>
+      </mitre>
+    </rule>
+    
+    <rule id="115004" level="10">
+      <if_group>windows</if_group>
+      <field name="win.eventdata.ruleName" type="pcre2" >technique_id=T1518.001,technique_name=Security Software Discovery</field>
+      <description>Security Software Discovery Attempt has been Detected on $(win.system.computer)</description>
+      <mitre>
+        <id>T1518</id>
+      </mitre>
+    </rule>
+    
+    <rule id="115005" level="10">
+      <if_group>windows</if_group>
+      <field name="win.eventdata.ruleName" type="pcre2" >technique_id=T1548.002,technique_name=Bypass User Access Control</field>
+      <description>Privilege Escalation Through Bypass of UAC has been Detected on $(win.system.computer)</description>
+      <mitre>
+        <id>T1548.002</id>
+        <id>T1088</id>
+      </mitre>
+    </rule>   
+</group>
+
+<group name="honeypot,">
+  <rule id="100001" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="eventid">cowrie.login.failed</field>
+    <description>SSH brute-force attempt detected via Cowrie honeypot</description>
+    <group>authentication_failed,honeypot</group>
+  </rule>
+</group>
+```
